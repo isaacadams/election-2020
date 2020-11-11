@@ -1,0 +1,52 @@
+{
+  "name": "election-2020",
+  "version": "1.0.0",
+  "description": "",
+  "source": "src/index.html",
+  "browser": "dist/index.html",
+  "scripts": {
+    "clean:dist": "rimraf dist/*",
+    "clean": "npm run clean:dist",
+    "lint": "eslint src/**/*.{js,jsx,ts,tsx}",
+    "format": "prettier --write src/**",
+    "build": "npm run clean && parcel build %npm_package_source%",
+    "prestart": "npm run clean",
+    "start": "parcel serve %npm_package_source%"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/isaacadams/election-2020.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/isaacadams/election-2020/issues"
+  },
+  "homepage": "https://github.com/isaacadams/election-2020#readme",
+  "dependencies": {
+    "bootstrap": "^4.5.3",
+    "react": "^17.0.1",
+    "react-bootstrap": "^1.4.0",
+    "react-dom": "^17.0.1",
+    "react-icons": "^3.11.0"
+  },
+  "devDependencies": {
+    "@parcel/transformer-image": "^2.0.0-nightly.2027",
+    "@types/react": "^16.9.56",
+    "@types/react-bootstrap": "0.32.24",
+    "@types/react-dom": "16.9.9",
+    "@types/react-icons": "3.0.0",
+    "@typescript-eslint/eslint-plugin": "^4.7.0",
+    "@typescript-eslint/parser": "^4.7.0",
+    "eslint": "^7.13.0",
+    "eslint-config-prettier": "^6.15.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "eslint-plugin-react": "^7.21.5",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "lint-staged": "^10.5.1",
+    "parcel": "^2.0.0-beta.1",
+    "prettier": "2.1.2",
+    "rimraf": "^3.0.2",
+    "typescript": "^4.0.5"
+  }
+}
