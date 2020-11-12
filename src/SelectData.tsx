@@ -9,17 +9,21 @@ let states: IStateModel[] = rawStatesData.map((s) => ({
   abbrev: s.abbrev,
 }));
 
-export function SelectElectionData({}) {
+export function SelectElectionData(props): JSX.Element {
   let race = UseSelect({
-    values: ['president', 'senate', 'house'],
+    options: ['president', 'senate', 'house'],
     name: 'race',
     defaultValue: 'president',
   });
 
   let state = UseSelect({
-    values: states.map((s) => s.name.toLowerCase()),
+    options: states.map((s, i) => (
+      <option value={s.name.toLowerCase()} key={i}>
+        {s.name}
+      </option>
+    )),
     name: 'state',
-    defaultValue: states[0].name,
+    defaultValue: states[0].name.toLowerCase(),
   });
 
   React.useEffect(() => {
