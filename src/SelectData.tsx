@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {Container} from 'react-bootstrap';
 import rawStatesData from '../states.json';
 import {IStateModel} from './IStateModel';
 import {UseSelect} from './UseSelect';
@@ -14,6 +15,7 @@ export function SelectElectionData(props): JSX.Element {
     options: ['president', 'senate', 'house'],
     name: 'race',
     defaultValue: 'president',
+    className: 'form-control',
   });
 
   let state = UseSelect({
@@ -24,6 +26,7 @@ export function SelectElectionData(props): JSX.Element {
     )),
     name: 'state',
     defaultValue: states[0].name.toLowerCase(),
+    className: 'form-control',
   });
 
   React.useEffect(() => {
@@ -37,9 +40,9 @@ export function SelectElectionData(props): JSX.Element {
       .catch(console.error);
   }, [race.selected, state.selected]);
   return (
-    <div>
+    <Container>
       {race.view}
       {state.view}
-    </div>
+    </Container>
   );
 }
