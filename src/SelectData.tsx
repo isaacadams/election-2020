@@ -45,15 +45,7 @@ export function SelectElectionData(props): JSX.Element {
       })
       .catch(console.error);
   }, [race.selected, state.selected]);
-  if (series) {
-    series
-      .filter((s) => s.votes == 0)
-      .map((s) => ({
-        ...s,
-        timestamp: new Date(s.timestamp),
-      }))
-      .forEach(console.log);
-  }
+
   return (
     <Container>
       <Row>
