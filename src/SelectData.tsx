@@ -4,6 +4,7 @@ import rawStatesData from './states';
 import {IStateModel} from './IStateModel';
 import {UseSelect} from './UseSelect';
 import {UseChart} from './UseChart';
+import {ProcessData} from './Calculations';
 
 let states: IStateModel[] = rawStatesData.map((s) => ({
   name: s.state,
@@ -40,19 +41,7 @@ export function SelectElectionData(props): JSX.Element {
         return r.json();
       })
       .then((d) => {
-        console.log(d);
-        let timeseries = d.data.races[0].timeseries;
-        console.log(timeseries);
-        // removing datapoint where votes go down to zero
-        let firstDateThatIsNotZero = new Date(
-          timeseries.find((s) => s.votes != 0).timestamp
-        );
-        setSeries(
-          timeseries.filter(
-            (s) =>
-              new Date(s.timestamp) > firstDateThatIsNotZero && s.votes != 0
-          )
-        );
+        setSeries(ProcessData(d));
       })
       .catch(console.error);
   }, [race.selected, state.selected]);
