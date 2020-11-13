@@ -4,7 +4,7 @@ export function ProcessData(response: any): any {
   console.log(timeseries);
 
   let cleaned = removeAnamoly(timeseries);
-
+  calculateVoteDifferences(cleaned);
   return prepareForChart(cleaned);
 }
 
@@ -43,4 +43,46 @@ interface IVoteUpdate {
 interface IVoteShares {
   bidenj: number;
   trumpd: number;
+}
+
+function calculateVoteDifferences(data: IVoteUpdate[]): void {
+  data.reduce((p, c, i, a) => {
+    console.log('previous');
+    console.log(p);
+    console.log('current');
+    console.log(c);
+
+    return {
+      general: getChangeFromPreviousModel(c.votes, p['general']),
+      trump: getChangeFromPreviousModel(
+        c.votes * c.vote_shares.trumpd,
+        p['trump']
+      ),
+      biden: getChangeFromPreviousModel(
+        c.votes * c.vote_shares.bidenj,
+        p['biden']
+      ),
+    };
+  }, {});
+}
+
+function getChangeFromPreviousModel(
+  current: number,
+  previous: IVoteProgressModel
+): IVoteProgressModel {
+  return !!previous ? getChange(current, previous.total) : getChange(0, 0);
+}
+
+function getChange(current: number, previous: number): IVoteProgressModel {
+  return {
+    total: current,
+    previous,
+    change: current - previous,
+  };
+}
+
+interface IVoteProgressModel {
+  total: number;
+  previous: number;
+  change: number;
 }
