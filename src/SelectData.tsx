@@ -55,11 +55,7 @@ export function SelectElectionData(props): JSX.Element {
       <Row className="mt-3">
         {series && (
           <Col>
-            <UseChart
-              data={series
-                .map((s) => [new Date(s.timestamp), s.votes])
-                .sort((a, b) => a[0].getTime() - b[0].getTime())}
-            />
+            <UseChart data={series} />
           </Col>
         )}
       </Row>
