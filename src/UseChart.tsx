@@ -9,13 +9,10 @@ import {
 import {TimeSeries} from 'pondjs';
 
 interface IProps {
-  time: string[];
-  data: number[];
+  data: any[];
 }
 
-export function UseChart({time, data}: IProps): JSX.Element {
-  //console.log(time);
-  //console.log(data);
+export function UseChart({data}: IProps): JSX.Element {
   let series = new TimeSeries({
     name: 'votes',
     //collection: ,

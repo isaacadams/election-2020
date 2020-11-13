@@ -56,9 +56,6 @@ export function SelectElectionData(props): JSX.Element {
         {series && (
           <Col>
             <UseChart
-              time={series
-                .map((s) => new Date(s.timestamp))
-                .sort((a, b) => a.getTime() - b.getTime())}
               data={series
                 .map((s) => [new Date(s.timestamp), s.votes])
                 .sort((a, b) => a[0].getTime() - b[0].getTime())}
