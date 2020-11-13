@@ -3,15 +3,17 @@
   "version": "1.0.0",
   "description": "",
   "source": "src/index.html",
-  "browser": "dist/index.html",
+  "browser": "public/index.html",
   "scripts": {
     "clean:dist": "rimraf dist/*",
     "clean": "npm run clean:dist",
     "lint": "eslint src/**/*.{js,jsx,ts,tsx}",
     "format": "prettier --write src/**",
-    "build": "npm run clean && parcel build %npm_package_source%",
+    "opts": "parcel build --help",
+    "build": "rimraf public && parcel build --dist-dir public --detailed-report 4 src/index.html",
     "prestart": "npm run clean",
-    "start": "parcel serve %npm_package_source%"
+    "start": "parcel serve %npm_package_source%",
+    "deploy": "rimraf public && parcel build -d public %npm_package_source% && firebase deploy"
   },
   "repository": {
     "type": "git",
@@ -45,6 +47,7 @@
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-react": "^7.21.5",
     "eslint-plugin-react-hooks": "^4.2.0",
+    "firebase-tools": "^8.16.1",
     "lint-staged": "^10.5.1",
     "parcel": "^2.0.0-beta.1",
     "prettier": "2.1.2",

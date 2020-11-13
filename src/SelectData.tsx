@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Col, Container, Row} from 'react-bootstrap';
-import rawStatesData from './states.json';
+import rawStatesData from './states';
 import {IStateModel} from './IStateModel';
 import {UseSelect} from './UseSelect';
 import {UseChart} from './UseChart';
