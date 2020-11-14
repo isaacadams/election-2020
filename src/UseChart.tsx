@@ -7,9 +7,10 @@ import {
   LineChart,
 } from 'react-timeseries-charts';
 import {TimeSeries} from 'pondjs';
+import {IVoteUpdate, sortByDate} from './Calculations';
 
 interface IProps {
-  data: any[];
+  data: IVoteUpdate[];
 }
 
 export function UseChart({data}: IProps): JSX.Element {
@@ -18,10 +19,13 @@ export function UseChart({data}: IProps): JSX.Element {
     //collection: ,
     columns: ['time', 'votes'],
     //events: '',
-    points: data,
+    points: sortByDate<any>(
+      data.map((s) => [new Date(s.timestamp), s.votes]),
+      (s) => s[0]
+    ),
   });
 
-  let votes = data.map((d) => parseInt(d[1]));
+  let votes = data.map((d) => d.votes);
   return (
     <ChartContainer timeRange={series.timerange()} width={800}>
       <ChartRow height="200">

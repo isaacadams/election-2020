@@ -4,7 +4,8 @@ import rawStatesData from './states';
 import {IStateModel} from './IStateModel';
 import {UseSelect} from './UseSelect';
 import {UseChart} from './UseChart';
-import {ProcessData} from './Calculations';
+import {IVoteUpdate, ProcessData} from './Calculations';
+import {VoteChangesChart} from './VoteChangesChart';
 
 let states: IStateModel[] = rawStatesData.map((s) => ({
   name: s.state,
@@ -31,7 +32,7 @@ export function SelectElectionData(props): JSX.Element {
     className: 'form-control',
   });
 
-  let [series, setSeries] = React.useState(null);
+  let [series, setSeries] = React.useState<IVoteUpdate[]>(null);
 
   React.useEffect(() => {
     let url = `https://static01.nyt.com/elections-assets/2020/data/api/2020-11-03/race-page/${state.selected}/${race.selected}.json`;
@@ -56,6 +57,13 @@ export function SelectElectionData(props): JSX.Element {
         {series && (
           <Col>
             <UseChart data={series} />
+          </Col>
+        )}
+      </Row>
+      <Row className="mt-3">
+        {series && (
+          <Col>
+            <VoteChangesChart data={series} />
           </Col>
         )}
       </Row>

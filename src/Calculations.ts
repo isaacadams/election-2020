@@ -1,11 +1,12 @@
-export function ProcessData(response: any): any {
+export function ProcessData(response: any): IVoteUpdate[] {
   console.log(response);
   let timeseries = response.data.races[0].timeseries as IVoteUpdate[];
   console.log(timeseries);
 
   let cleaned = removeAnamoly(timeseries);
   calculateVoteDifferences(cleaned);
-  return prepareForChart(cleaned);
+  return cleaned;
+  //return prepareForChart(cleaned);
 }
 
 function removeAnamoly(timeseries: IVoteUpdate[]): IVoteUpdate[] {
@@ -19,20 +20,20 @@ function removeAnamoly(timeseries: IVoteUpdate[]): IVoteUpdate[] {
   );
 }
 
-function prepareForChart(series: IVoteUpdate[]): any {
+export function prepareForChart(series: IVoteUpdate[]): any[] {
   return sortByDate<any>(
     series.map((s) => [new Date(s.timestamp), s.votes]),
     (s) => s[0]
   );
 }
 
-function sortByDate<T>(data: T[], pointToDate: (d: T) => Date) {
+export function sortByDate<T>(data: T[], pointToDate: (d: T) => Date): T[] {
   return data.sort(
     (a, b) => pointToDate(a).getTime() - pointToDate(b).getTime()
   );
 }
 
-interface IVoteUpdate {
+export interface IVoteUpdate {
   votes: number;
   eevp: number;
   eevp_source: string;
@@ -45,14 +46,19 @@ interface IVoteShares {
   trumpd: number;
 }
 
-function calculateVoteDifferences(data: IVoteUpdate[]): void {
-  data.reduce((p, c, i, a) => {
-    console.log('previous');
-    console.log(p);
-    console.log('current');
-    console.log(c);
+export interface IVoteChange {
+  timestamp: string;
+  general: IVoteProgressModel;
+  trump: IVoteProgressModel;
+  biden: IVoteProgressModel;
+}
 
-    return {
+export function calculateVoteDifferences(data: IVoteUpdate[]): IVoteChange[] {
+  let voteChanges: IVoteChange[] = [];
+
+  data.reduce<IVoteChange>((p, c, i, a) => {
+    let change: IVoteChange = {
+      timestamp: c.timestamp,
       general: getChangeFromPreviousModel(c.votes, p['general']),
       trump: getChangeFromPreviousModel(
         c.votes * c.vote_shares.trumpd,
@@ -63,7 +69,11 @@ function calculateVoteDifferences(data: IVoteUpdate[]): void {
         p['biden']
       ),
     };
+    voteChanges.push(change);
+    return change;
   }, {});
+
+  return voteChanges;
 }
 
 function getChangeFromPreviousModel(
