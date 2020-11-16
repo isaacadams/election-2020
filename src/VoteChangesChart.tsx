@@ -10,10 +10,11 @@ import {
 } from 'react-timeseries-charts';
 import {Index, TimeSeries} from 'pondjs';
 import {calculateVoteDifferences, IVoteUpdate} from './Calculations';
+import {Button} from 'react-bootstrap';
 
 const style = styler([
-  {key: 'trump', color: '#A5C8E1', selected: '#2CB1CF'},
-  {key: 'biden', color: '#FFCC9E', selected: '#2CB1CF'},
+  {key: 'biden', color: '#A5C8E1', selected: '#2CB1CF'},
+  {key: 'trump', color: '#FFCC9E', selected: '#2CB1CF'},
   /* {
     key: netTrafficColumnNames[1],
     color: '#A5C8E1',
@@ -48,88 +49,103 @@ export function VoteChangesChart({data}: IProps): JSX.Element {
     []
   );
 
+  let series = new TimeSeries({
+    name: 'votes',
+    utc: false,
+    columns: ['index', 'trump', 'biden'],
+    points: dataTransform,
+    //collection: ,
+    //events: '',
+  });
+
   const [min, globalMax] = [
     Math.min(...allChangeVotes),
     Math.max(...allChangeVotes),
   ];
   let [max, setMax] = React.useState(globalMax);
-
-  let series = new TimeSeries({
-    name: 'votes',
-    utc: false,
-    //collection: ,
-    columns: ['index', 'trump', 'biden'],
-    //events: '',
-    points: dataTransform,
-  });
-
   let [timeRange, setTimeRange] = React.useState(series.timerange());
+  let [selected, setSelected] = React.useState(null);
 
   return (
-    <Resizable>
-      <ChartContainer
-        enableDragZoom
-        utc={false}
-        timeRange={timeRange}
-        onTimeRangeChanged={(time) => {
-          setTimeRange(time);
-          let croppedSeries = series.crop(time);
-          let localMax = Math.max(
-            croppedSeries.max('biden'),
-            croppedSeries.max('trump')
-          );
-          setMax(localMax);
-        }}
-        /* maxTime={series.range().end()}
+    <>
+      <div className="d-flex justify-content-end">
+        <Button
+          className="mb-2"
+          variant="outline-secondary"
+          onClick={() => {
+            setTimeRange(series.timerange());
+            setMax(globalMax);
+          }}
+        >
+          Zoom Out
+        </Button>
+      </div>
+      <Resizable>
+        <ChartContainer
+          enableDragZoom
+          utc={false}
+          timeRange={timeRange}
+          onTimeRangeChanged={(time) => {
+            setTimeRange(time);
+            let croppedSeries = series.crop(time);
+            let localMax = Math.max(
+              croppedSeries.max('biden'),
+              croppedSeries.max('trump')
+            );
+            setMax(localMax);
+          }}
+          /* maxTime={series.range().end()}
         minTime={series.range().begin()} */
-        //format="day"
-        onBackgroundClick={() => {
-          setTimeRange(series.timerange());
-          setMax(globalMax);
-        }}
-      >
-        <ChartRow height="150">
-          <YAxis
-            id="traffic-volume"
-            label="change of votes"
-            //classed="traffic-in"
-            min={min}
-            max={max}
-            width="70"
-            type="linear"
-          />
-          <Charts>
-            <BarChart
-              axis="traffic-volume"
-              style={style}
-              size={10}
-              offset={5.5}
-              columns={['trump']}
-              series={series}
-              /* highlighted={this.state.highlight}
+          //format="day"
+          onBackgroundClick={() => {
+            //setTimeRange(series.timerange());
+            //setMax(globalMax);
+            setSelected(null);
+          }}
+        >
+          <ChartRow height="150">
+            <YAxis
+              id="traffic-volume"
+              label="change of votes"
+              //classed="traffic-in"
+              min={min}
+              max={max}
+              width="70"
+              type="linear"
+            />
+            <Charts>
+              <BarChart
+                axis="traffic-volume"
+                style={style}
+                size={10}
+                offset={5.5}
+                columns={['trump']}
+                series={series}
+                selected={selected}
+                onSelectionChange={setSelected}
+                /* highlighted={this.state.highlight}
               info={infoValues}
               infoTimeFormat="%m/%d/%y"
-              onHighlightChange={(highlight) => this.setState({highlight})}
-              selected={this.state.selection}
-              onSelectionChange={(selection) => this.setState({selection})} */
-            />
-            <BarChart
-              axis="traffic-volume"
-              style={style}
-              size={10}
-              offset={-5.5}
-              columns={['biden']}
-              series={series}
-              //info={[{label: 'Traffic', value: 'hello world'}]}
-              /* info={infoValues}
+              onHighlightChange={(highlight) => this.setState({highlight})} */
+              />
+              <BarChart
+                axis="traffic-volume"
+                style={style}
+                size={10}
+                offset={-5.5}
+                columns={['biden']}
+                series={series}
+                selected={selected}
+                onSelectionChange={setSelected}
+                //info={[{label: 'Traffic', value: 'hello world'}]}
+                /* info={infoValues}
               highlighted={this.state.highlight}
-              onHighlightChange={(highlight) => this.setState({highlight})}
-              selected={this.state.selection}
-              onSelectionChange={(selection) => this.setState({selection})} */
-            />
-          </Charts>
-        </ChartRow>
-      </ChartContainer>
-    </Resizable>
+              onHighlightChange={(highlight) => this.setState({highlight})} */
+              />
+            </Charts>
+          </ChartRow>
+        </ChartContainer>
+      </Resizable>
+    </>
   );
 }
