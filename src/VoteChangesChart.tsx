@@ -58,11 +58,12 @@ export function VoteChangesChart({data}: IProps): JSX.Element {
     //events: '',
   });
 
-  const [min, globalMax] = [
+  const [globalMin, globalMax] = [
     Math.min(...allChangeVotes),
     Math.max(...allChangeVotes),
   ];
   let [max, setMax] = React.useState(globalMax);
+  let [min, setMin] = React.useState(globalMin);
   let [timeRange, setTimeRange] = React.useState(series.timerange());
   let [selected, setSelected] = React.useState(null);
 
@@ -93,19 +94,23 @@ export function VoteChangesChart({data}: IProps): JSX.Element {
               croppedSeries.max('trump')
             );
             setMax(localMax);
+
+            let localMin = Math.min(
+              croppedSeries.min('biden'),
+              croppedSeries.min('trump')
+            );
+            setMin(localMin);
           }}
           /* maxTime={series.range().end()}
         minTime={series.range().begin()} */
           //format="day"
           onBackgroundClick={() => {
-            //setTimeRange(series.timerange());
-            //setMax(globalMax);
             setSelected(null);
           }}
         >
           <ChartRow height="150">
             <YAxis
-              id="traffic-volume"
+              id="vote-change"
               label="change of votes"
               //classed="traffic-in"
               min={min}
@@ -115,7 +120,7 @@ export function VoteChangesChart({data}: IProps): JSX.Element {
             />
             <Charts>
               <BarChart
-                axis="traffic-volume"
+                axis="vote-change"
                 style={style}
                 size={10}
                 offset={5.5}
@@ -129,7 +134,7 @@ export function VoteChangesChart({data}: IProps): JSX.Element {
               onHighlightChange={(highlight) => this.setState({highlight})} */
               />
               <BarChart
-                axis="traffic-volume"
+                axis="vote-change"
                 style={style}
                 size={10}
                 offset={-5.5}
