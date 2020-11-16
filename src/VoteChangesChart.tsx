@@ -48,7 +48,11 @@ export function VoteChangesChart({data}: IProps): JSX.Element {
     []
   );
 
-  const [min, max] = [Math.min(...allChangeVotes), Math.max(...allChangeVotes)];
+  const [min, globalMax] = [
+    Math.min(...allChangeVotes),
+    Math.max(...allChangeVotes),
+  ];
+  let [max, setMax] = React.useState(globalMax);
 
   let series = new TimeSeries({
     name: 'votes',
@@ -69,13 +73,20 @@ export function VoteChangesChart({data}: IProps): JSX.Element {
         timeRange={timeRange}
         onTimeRangeChanged={(time) => {
           setTimeRange(time);
-          //let slicedSeries = series.slice(time.begin(), time.end());
-          //console.log(slicedSeries.max('trump'));
+          let croppedSeries = series.crop(time);
+          let localMax = Math.max(
+            croppedSeries.max('biden'),
+            croppedSeries.max('trump')
+          );
+          setMax(localMax);
         }}
         /* maxTime={series.range().end()}
         minTime={series.range().begin()} */
         //format="day"
-        /* onBackgroundClick={() => this.setState({selection: null})} */
+        onBackgroundClick={() => {
+          setTimeRange(series.timerange());
+          setMax(globalMax);
+        }}
       >
         <ChartRow height="150">
           <YAxis
@@ -109,6 +120,7 @@ export function VoteChangesChart({data}: IProps): JSX.Element {
               offset={-5.5}
               columns={['biden']}
               series={series}
+              //info={[{label: 'Traffic', value: 'hello world'}]}
               /* info={infoValues}
               highlighted={this.state.highlight}
               onHighlightChange={(highlight) => this.setState({highlight})}
