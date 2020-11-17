@@ -39,7 +39,7 @@ export function UseChart({data}: IProps): JSX.Element {
     ),
   });
 
-  let size = useWindowSize();
+  /* let size = useWindowSize();
   let styling =
     size === 'large'
       ? {}
@@ -48,7 +48,7 @@ export function UseChart({data}: IProps): JSX.Element {
             'font-weight': '600',
             'font-size': '16px',
           },
-        };
+        }; */
 
   let [highlight, setHighlight] = React.useState(null);
   let [info, setInfo] = React.useState(null);
@@ -59,13 +59,13 @@ export function UseChart({data}: IProps): JSX.Element {
       timeRange={series.timerange()}
       width={800}
       onTrackerChanged={onTrackerChanged}
-      timeAxisStyle={styling}
+      //timeAxisStyle={styling}
     >
       <ChartRow height="600">
         <YAxis
           id="axis1"
           label="votes"
-          style={styling}
+          //style={styling}
           min={series.min('votes')}
           max={series.max('votes')}
           width="60"
