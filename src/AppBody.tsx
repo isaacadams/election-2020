@@ -13,20 +13,10 @@ export function AppBody(props): JSX.Element {
     <Container>
       <Row>
         <Col>{formView}</Col>
-      </Row>
-      <Row className="mt-3">
-        {data && (
-          <Col>
-            <UseChart data={data} />
-          </Col>
-        )}
-      </Row>
-      <Row className="mt-3">
-        {data && (
-          <Col>
-            <VoteChangesChart data={data} />
-          </Col>
-        )}
+        <Col>
+          {data && <UseChart data={data} />}
+          {data && <VoteChangesChart data={data} />}
+        </Col>
       </Row>
     </Container>
   );
