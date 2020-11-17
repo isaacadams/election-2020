@@ -38,10 +38,16 @@ export function SelectElectionDataForm(props): IReturn {
   let formView = (
     <Container>
       <Row>
-        <Col>{state.view}</Col>
+        <Col>
+          <label>Choose a state</label>
+          {state.view}
+        </Col>
       </Row>
-      <Row>
-        <Col>{race.view}</Col>
+      <Row className="mt-3">
+        <Col>
+          <label>Choose a race</label>
+          {race.view}
+        </Col>
       </Row>
     </Container>
   );
