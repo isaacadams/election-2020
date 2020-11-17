@@ -66,6 +66,7 @@ export function VoteChangesChart({data}: IProps): JSX.Element {
   let [min, setMin] = React.useState(globalMin);
   let [timeRange, setTimeRange] = React.useState(series.timerange());
   let [selected, setSelected] = React.useState(null);
+  let [highlight, setHighlight] = React.useState(null);
 
   return (
     <>
@@ -126,12 +127,12 @@ export function VoteChangesChart({data}: IProps): JSX.Element {
               offset={5.5}
               columns={['trump']}
               series={series}
+              infoTimeFormat="%m/%d/%y %H:%M:%S"
+              info={[{label: 'trump', value: 'hello world'}]}
               selected={selected}
               onSelectionChange={setSelected}
-              /* highlighted={this.state.highlight}
-              info={infoValues}
-              infoTimeFormat="%m/%d/%y"
-              onHighlightChange={(highlight) => this.setState({highlight})} */
+              highlighted={highlight}
+              onHighlightChange={setHighlight}
             />
             <BarChart
               axis="vote-change"
@@ -140,12 +141,12 @@ export function VoteChangesChart({data}: IProps): JSX.Element {
               offset={-5.5}
               columns={['biden']}
               series={series}
+              infoTimeFormat="%m/%d/%y %H:%M:%S"
+              info={[{label: 'biden', value: 'hello world'}]}
               selected={selected}
               onSelectionChange={setSelected}
-              info={[{label: 'Traffic', value: 'hello world'}]}
-              /* info={infoValues}
-              highlighted={this.state.highlight}
-              onHighlightChange={(highlight) => this.setState({highlight})} */
+              highlighted={highlight}
+              onHighlightChange={setHighlight}
             />
           </Charts>
         </ChartRow>
