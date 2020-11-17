@@ -14,6 +14,7 @@ export function AppBody(props): JSX.Element {
       <Row>
         <Col>{formView}</Col>
         <Col>
+          {!data && <span>no data to display</span>}
           {data && chart === 'total votes' && <UseChart data={data} />}
           {data && chart === 'change in votes' && (
             <VoteChangesChart data={data} />
