@@ -129,7 +129,7 @@ export function VoteChangesChart({data}: IProps): JSX.Element {
               columns={['trump']}
               series={series}
               infoTimeFormat="%m/%d/%y %H:%M:%S"
-              info={[{label: 'trump', value: info}]}
+              info={[info]}
               selected={selected}
               onSelectionChange={setSelected}
               highlighted={highlight}
@@ -143,7 +143,7 @@ export function VoteChangesChart({data}: IProps): JSX.Element {
               columns={['biden']}
               series={series}
               infoTimeFormat="%m/%d/%y %H:%M:%S"
-              info={[{label: 'biden', value: info}]}
+              info={[info]}
               selected={selected}
               onSelectionChange={setSelected}
               highlighted={highlight}
@@ -157,10 +157,15 @@ export function VoteChangesChart({data}: IProps): JSX.Element {
 
   function onHighlightChange(h) {
     setHighlight(h);
-    setInfo(
-      h?.event
-        .get(h?.column)
-        .toLocaleString(undefined, {maximumFractionDigits: 0})
-    );
+    setInfo({
+      label: h?.column,
+      value: getColumnHighlightValue(h)?.toLocaleString(undefined, {
+        maximumFractionDigits: 0,
+      }),
+    });
+  }
+
+  function getColumnHighlightValue(h): number {
+    return h?.event.get(h?.column);
   }
 }
