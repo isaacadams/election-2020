@@ -28,7 +28,7 @@ export function UseChart({data}: IProps): JSX.Element {
   let votes = data.map((d) => d.votes);
   return (
     <ChartContainer timeRange={series.timerange()} width={800}>
-      <ChartRow height="200">
+      <ChartRow height="600">
         <YAxis
           id="axis1"
           label="votes"

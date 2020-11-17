@@ -13,6 +13,7 @@ let states: IStateModel[] = rawStatesData.map((s) => ({
 interface IReturn {
   state: string | number | readonly string[];
   race: string | number | readonly string[];
+  chart: string | number | readonly string[];
   formView: JSX.Element;
 }
 
@@ -35,6 +36,13 @@ export function SelectElectionDataForm(props): IReturn {
     className: 'form-control',
   });
 
+  let charts = UseSelect({
+    options: ['total votes', 'change in votes'],
+    name: 'chart',
+    defaultValue: 'total votes',
+    className: 'form-control',
+  });
+
   let formView = (
     <Container>
       <Row>
@@ -49,12 +57,19 @@ export function SelectElectionDataForm(props): IReturn {
           {race.view}
         </Col>
       </Row>
+      <Row className="mt-3">
+        <Col>
+          <label>Choose a chart</label>
+          {charts.view}
+        </Col>
+      </Row>
     </Container>
   );
 
   return {
     state: state.selected,
     race: race.selected,
+    chart: charts.selected,
     formView,
   };
 }

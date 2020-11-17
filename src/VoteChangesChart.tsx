@@ -81,76 +81,75 @@ export function VoteChangesChart({data}: IProps): JSX.Element {
           Zoom Out
         </Button>
       </div>
-      <Resizable>
-        <ChartContainer
-          enableDragZoom
-          utc={false}
-          timeRange={timeRange}
-          onTimeRangeChanged={(time) => {
-            setTimeRange(time);
-            let croppedSeries = series.crop(time);
-            let localMax = Math.max(
-              croppedSeries.max('biden'),
-              croppedSeries.max('trump')
-            );
-            setMax(localMax);
+      <ChartContainer
+        enableDragZoom
+        utc={false}
+        timeRange={timeRange}
+        width={800}
+        onTimeRangeChanged={(time) => {
+          setTimeRange(time);
+          let croppedSeries = series.crop(time);
+          let localMax = Math.max(
+            croppedSeries.max('biden'),
+            croppedSeries.max('trump')
+          );
+          setMax(localMax);
 
-            let localMin = Math.min(
-              croppedSeries.min('biden'),
-              croppedSeries.min('trump')
-            );
-            setMin(localMin);
-          }}
-          /* maxTime={series.range().end()}
+          let localMin = Math.min(
+            croppedSeries.min('biden'),
+            croppedSeries.min('trump')
+          );
+          setMin(localMin);
+        }}
+        /* maxTime={series.range().end()}
         minTime={series.range().begin()} */
-          //format="day"
-          onBackgroundClick={() => {
-            setSelected(null);
-          }}
-        >
-          <ChartRow height="150">
-            <YAxis
-              id="vote-change"
-              label="change of votes"
-              //classed="traffic-in"
-              min={min}
-              max={max}
-              width="70"
-              type="linear"
-            />
-            <Charts>
-              <BarChart
-                axis="vote-change"
-                style={style}
-                size={10}
-                offset={5.5}
-                columns={['trump']}
-                series={series}
-                selected={selected}
-                onSelectionChange={setSelected}
-                /* highlighted={this.state.highlight}
+        //format="day"
+        onBackgroundClick={() => {
+          setSelected(null);
+        }}
+      >
+        <ChartRow height="600">
+          <YAxis
+            id="vote-change"
+            label="change of votes"
+            //classed="traffic-in"
+            min={min}
+            max={max}
+            width="70"
+            type="linear"
+          />
+          <Charts>
+            <BarChart
+              axis="vote-change"
+              style={style}
+              size={10}
+              offset={5.5}
+              columns={['trump']}
+              series={series}
+              selected={selected}
+              onSelectionChange={setSelected}
+              /* highlighted={this.state.highlight}
               info={infoValues}
               infoTimeFormat="%m/%d/%y"
               onHighlightChange={(highlight) => this.setState({highlight})} */
-              />
-              <BarChart
-                axis="vote-change"
-                style={style}
-                size={10}
-                offset={-5.5}
-                columns={['biden']}
-                series={series}
-                selected={selected}
-                onSelectionChange={setSelected}
-                //info={[{label: 'Traffic', value: 'hello world'}]}
-                /* info={infoValues}
+            />
+            <BarChart
+              axis="vote-change"
+              style={style}
+              size={10}
+              offset={-5.5}
+              columns={['biden']}
+              series={series}
+              selected={selected}
+              onSelectionChange={setSelected}
+              info={[{label: 'Traffic', value: 'hello world'}]}
+              /* info={infoValues}
               highlighted={this.state.highlight}
               onHighlightChange={(highlight) => this.setState({highlight})} */
-              />
-            </Charts>
-          </ChartRow>
-        </ChartContainer>
-      </Resizable>
+            />
+          </Charts>
+        </ChartRow>
+      </ChartContainer>
     </>
   );
 }

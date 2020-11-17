@@ -6,7 +6,7 @@ import {UseElectionData} from './UseElectionData';
 import {SelectElectionDataForm} from './SelectElectionDataForm';
 
 export function AppBody(props): JSX.Element {
-  let {state, race, formView} = SelectElectionDataForm({});
+  let {state, race, chart, formView} = SelectElectionDataForm({});
   let data = UseElectionData({state, race});
 
   return (
@@ -14,8 +14,10 @@ export function AppBody(props): JSX.Element {
       <Row>
         <Col>{formView}</Col>
         <Col>
-          {data && <UseChart data={data} />}
-          {data && <VoteChangesChart data={data} />}
+          {data && chart === 'total votes' && <UseChart data={data} />}
+          {data && chart === 'change in votes' && (
+            <VoteChangesChart data={data} />
+          )}
         </Col>
       </Row>
     </Container>
