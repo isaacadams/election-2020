@@ -10,15 +10,17 @@ export function AppBody(props): JSX.Element {
   let data = UseElectionData({state, race});
 
   return (
-    <Container>
-      <Row>
-        <Col>{formView}</Col>
-        <Col>
+    <Container fluid>
+      <Row className="d-flex justify-content-center">
+        <Col lg="auto" className="d-flex justify-content-center">
           {!data && <span>no data to display</span>}
           {data && chart === 'total votes' && <UseChart data={data} />}
           {data && chart === 'change in votes' && (
             <VoteChangesChart data={data} />
           )}
+        </Col>
+        <Col lg={2} md={12}>
+          {formView}
         </Col>
       </Row>
     </Container>

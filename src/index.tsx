@@ -8,7 +8,7 @@ import {AppHeader} from './AppHeader';
 
 function App(props): JSX.Element {
   return (
-    <Container>
+    <Container fluid>
       <Row>
         <Col>
           <AppHeader />
